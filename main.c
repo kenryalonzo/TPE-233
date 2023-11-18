@@ -4,32 +4,39 @@
 
 int main(int arg, char* argv[]) {
 
-    whichType myStack = initialize(False);
-    whichType myQueue = initialize(True);
+    // Create two data structures: a stack and a queue
+    DataStructure myStack = initialize(True);
+    DataStructure myQueue = initialize(False);
+    printDataStructure(myStack);
+    // Push five elements onto the stack
+    push(&myStack, 5);
+    push(&myStack, 6);
+    push(&myStack, 6);
+    push(&myStack, 2);
+    push(&myStack, 1);
 
-    myStack = empiler(myStack, 5);
-    myStack = empiler(myStack, 6);
-    myStack = empiler(myStack, 6);
-    myStack = empiler(myStack, 2);
-    myStack = empiler(myStack, 1);
+    // Print the information about the stack
+    printDataStructure(myStack);
 
-    print_This_Type(myStack);
+    // Pop an element from the stack and print it
+    int value = pop(&myStack);
+    printf("The value popped from the stack is: %d\n", value);
 
-    myQueue = put_On(myQueue, 5);
-    myQueue = put_On(myQueue, 6);
-    myQueue = put_On(myQueue, 6);
-    myQueue = put_On(myQueue, 2);
-    myQueue = put_On(myQueue, 1);
+    // Print the information about the stack after popping an element
+    printDataStructure(myStack);
 
-    print_This_Type(myQueue);
+    push(&myQueue, 5);
+    push(&myQueue, 6);
+    push(&myQueue, 6);
+    push(&myQueue, 2);
+    push(&myQueue, 1);
 
-    depiler_defiler(&myStack);
-    depiler_defiler(&myQueue);
+    // Dequeue an element from the queue and print it
+    value = dequeue(&myQueue);
+    printf("The value dequeued from the queue is: %d\n", value);
 
-    print_This_Type(myStack);
-    print_This_Type(myQueue);
-
-    int temp;
+    // Print the information about the queue after dequeuing an element
+    printDataStructure(myQueue);
 
     return 0;
 }

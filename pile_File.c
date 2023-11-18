@@ -2,232 +2,235 @@
 #include <stdlib.h>
 #include "pile_File.h"
 
-whichType initialize(Bool pile_Or_File) {
-
-    whichType types;
-
-    types.head = types.tail = NULL;
-    types.size = types.sum = types.num_Elements_Diff = 0;
-    types.pile_Or_File = pile_Or_File;
-    types.min = types.max = -1;
-
-    return types;
+DataStructure initialize(Bool isStack) {
+    DataStructure ds;
+    ds.head = NULL;
+    ds.tail = NULL;
+    ds.isStack = isStack;
+    ds.size = 0;
+    ds.numElementsDiff = 0;
+    ds.sum = 0;
+    ds.min = -1;
+    ds.max = -1;
+    return ds;
 }
 
 //  Now we will write a function that sums the elements of a stack or a queue.
 
-int sum(list *head) {
+int sum(Node *head) {
+    int sum = 0;
 
-    int sums = 0;
-    if (head == NULL)
+    if (!head) {
         return 0;
-    else
-    {
-        list *pile_File = head;
-        while (pile_File != NULL) {
-            sums += pile_File->value;
-            pile_File = pile_File->next;
-        }
-        return sums;
     }
-    
+
+    Node *current = head;
+
+    printf("Starting to calculate sum...\n");
+
+    while (current) {
+        printf("Current node value: %d\n", current->value);
+        sum += current->value;
+        current = current->next;
+    }
+
+    printf("Sum of values: %d\n", sum);
+
+    return sum;
 }
 
 //  Let's try writing a function that tests whether an element belongs to a stack or a queue.
 
-Bool exist(list *head, int value){
-
-    if (head == NULL)
+Bool exists(Node *head, int value) {
+    if (!head) {
         return False;
-    else
-    {
-        if (head->value == value)
-            return True;
-        return exist(head->next, value);
     }
+
+    Node *current = head;
+    while (current) {
+        if (current->value == value) {
+            return True;
+        }
+
+        current = current->next;
+    }
+
+    return False;
 }
 
 //  Let's now move on to writing a function that allows you to insert elements at the end of the structure.
 
-list *insertEnd(list *head, int value) {
+Node *insertEnd(Node *head, int value) {
+    if (!head) {
+        Node *newNode = malloc(sizeof(Node));
+        newNode->value = value;
+        newNode->next = NULL;
+        return newNode;
+    }
 
-    if (head == NULL) {
-    
-        list *newList = malloc(sizeof(*newList));
-        newList->value = value;
-        newList->next = NULL;
-        return newList;
-    } else
-        head->next = insertEnd(head->next, value);
-    
-    return head; 
+    head->next = insertEnd(head->next, value);
+    return head;
+}
+
+//  Now we are write a function that supp an element of the structure
+
+void freeList(Node *head) {
+    if (head) {
+        freeList(head->next);
+        free(head);
+    }
 }
 
 //  Here is the writing of a function which returns the number of different elements of a structure.Here is the writing of a function which returns the number of different elements of a structure.
 
-int num_Elements_Diff(list *head) {
-
-    int sums = 0;
-    list *tempList = NULL;
-    list *newTempList = head;
+int numElementsDiff(Node *head) {
+    int count = 0;
+    Node *tempList = NULL;
+    Node *newTempList = head;
 
     while (newTempList != NULL) {
-
-        if (exist(tempList, newTempList->value))
+        if (exists(tempList, newTempList->value))
             newTempList = newTempList->next;
         else {
             tempList = insertEnd(tempList, newTempList->value);
             newTempList = newTempList->next;
-        }    
+            count++;
+        }
     }
-    return length(tempList);
 
+    freeList(tempList);
+    return count;
 }
 
 //  And there is a function that returns the minimum of a structure.
 
-int minimum(list *head) {
-
-    if (head == NULL) 
+int minimum(Node *head) {
+    if (!head) {
         return -1;
-    else
-    {
-        int min_Value = head->value;
-        list *new = head->next;
-
-        while (new != NULL) { 
-            if (new->value < min_Value) {
-                min_Value = new->value;
-                new = new->next;
-            }
-        }
-        return min_Value;
     }
-    
+
+    int minValue = head->value;
+    Node *current = head->next;
+
+    while (current) {
+        if (current->value < minValue) {
+            minValue = current->value;
+        }
+
+        current = current->next;
+    }
+
+    return minValue;
 }
 
 //  On the other hand here it is rather the maximum that it returns.
-
-int maximum(list *head) {
-
-    if (head == NULL) 
+int maximum(Node *head) {
+    if (!head) {
         return -1;
-    else
-    {
-        int max_Value = head->value;
-        list *new = head->next;
-
-        while (new != NULL) { 
-            if (new->value > max_Value) {
-                max_Value = new->value;
-                new = new->next;
-            }
-        }
-        return max_Value;
     }
 
+    int maxValue = head->value;
+    Node *current = head->next;
+
+    while (current) {
+        if (current->value > maxValue) {
+            maxValue = current->value;
+        }
+
+        current = current->next;
+    }
+
+    return maxValue;
 }
 
-//  Then we move on to the length of the structure.
+//  Then we move on to the length of the structure in add new value to the structure.
 
-int length(list *head) {
+void push(DataStructure *ds, int value) {
+    Node *newNode = malloc(sizeof(Node));
+    newNode->value = value;
+    newNode->next = ds->head;
+    ds->head = newNode;
+    ds->size++;
 
-    int sums = 0;
-    if (head == NULL)
-        return 0;
-    else {
-        sums += 1;
-        return sums + length(head->next);
-    }
-
+    // Recalculate attributes after modifying the data structure
+    ds->numElementsDiff = numElementsDiff(ds->head);
+    ds->sum = ds->sum + value;
 }
 
 //  Small display function, for the elements of the structure.
 
-void print_This_Type(whichType thisType) {
-
-    list *pile_File = thisType.head;
+void printDataStructure(DataStructure ds) {
+    Node *current = ds.head;
     printf("\n--------------------------------------\n");
 
-    if (thisType.pile_Or_File == True)
-        printf("INFORMATION ON THE QUEUE: \n");
-    printf("INFORMATION ON THE STACK : \n");
-
-    printf("Size : %d    |    Number of different elements : %d    |    min : %d    |    max : %d   |    sum : %d \n", thisType.size, thisType.num_Elements_Diff, thisType.min, thisType.max, thisType.sum);
-    printf("Content : \n");
-
-    while (pile_File != NULL) {
-        printf("%d ", pile_File->value);
-        pile_File = pile_File->next;
-    }
-    printf("\n----------------------------------------\n");
-        
-}
-
-//    STACK
-
-whichType empiler(whichType pile, int newValue) {
-    
-    list *pile_File = malloc(sizeof(*pile_File));
-
-    pile_File->value = newValue;
-    pile_File->next = pile.head;
-
-    pile.head = pile_File;
-    pile.size++;
-    pile.num_Elements_Diff = num_Elements_Diff(pile.head);
-    pile.min = minimum(pile.head);
-    pile.max = maximum(pile.head);
-    pile.sum = pile.sum + newValue;
-
-    return pile;
-}
-
-//   put on
-
-whichType put_On(whichType file, int newValue) {
-
-    list *stack = malloc(sizeof(*stack));
-    stack->value = newValue;
-    stack->next = NULL;
-
-    if (file.head == NULL) {
-        
-        file.head = stack;
-        file.tail = stack;
+    if (ds.isStack == True) {
+        printf("INFORMATION ON THE STACK:\n");
     } else {
-        file.tail->next = stack;
-        file.tail = stack;
+        printf("INFORMATION ON THE QUEUE:\n");
     }
 
-    file.size++;
-    file.num_Elements_Diff = num_Elements_Diff(file.head);
-    file.min = minimum(file.head);
-    file.max = maximum(file.head);
-    file.sum = file.sum + newValue;
+    printf("Size: %d\n", ds.size);
+    printf("Number of different elements: %d\n", ds.numElementsDiff);
 
-    return file;
+    // Separate variables for minimum and maximum values
+    int minValue = minimum(ds.head);
+    int maxValue = maximum(ds.head);
+
+    printf("Min: %d\n", minValue);
+    printf("Max: %d\n", maxValue);
+    printf("Sum: %d\n", ds.sum);
+    printf("Content: \n");
+
+    while (current) {
+        printf("%d ", current->value);
+        current = current->next;
+    }
 }
 
-//  Remving in the stack or removing in the queue.
+//   pop one element from the structure
 
-int depiler_defiler(whichType *element) {
-    
-    if (element->head != NULL) {
-        
-        int temp = element->head->value;
-        list *stack = element->head;
-
-        element->head = element->head->next;
-        element->size--;
-        element->num_Elements_Diff = num_Elements_Diff(element->head);
-        element->min = minimum(element->head);
-        element->max = maximum(element->head);
-        element->sum = element->sum - stack->value;
-
-        free(stack);
-
+int pop(DataStructure *ds) {
+    if (!ds->head) {
+        return -79;
     }
-    return -79;
-    
+
+    int value = ds->head->value;
+    Node *oldHead = ds->head;
+    ds->head = ds->head->next;
+    free(oldHead);
+
+    ds->size--;
+
+    // Recalculate attributes after modifying the data structure
+    ds->numElementsDiff = numElementsDiff(ds->head);
+    ds->min = minimum(ds->head);
+    ds->max = maximum(ds->head);
+    ds->sum = ds->sum - value;
+
+    return value;
+}
+
+//  Remving element in the queue.
+
+int dequeue(DataStructure *ds) {
+    if (!ds->head) {
+        return -79;
+    }
+
+    int value = ds->head->value;
+    if (ds->head->next == NULL) {
+        ds->head = NULL;
+    } else {
+        ds->head = ds->head->next;
+    }
+
+    ds->size--;
+
+    // Recalculate attributes after modifying the data structure
+    ds->numElementsDiff = numElementsDiff(ds->head);
+    ds->min = minimum(ds->head);
+    ds->max = maximum(ds->head);
+    ds->sum = ds->sum - value;
+
+    return value;
 }

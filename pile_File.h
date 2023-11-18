@@ -2,42 +2,41 @@
 #define __PILE__H__
 
 typedef enum {
-
     False,
-
     True
+} Bool;
 
-}Bool;
-
-typedef struct block {
-
+typedef struct Node {
     int value;
-    struct block *next;
-}list;
+    struct Node *next;
+} Node;
 
 
-typedef struct pile_File
-{
-    list *head;
-    list *tail;
-    Bool pile_Or_File;
-    int size, num_Elements_Diff, sum, min, max;
-}whichType;
+typedef struct DataStructure {
+    Node *head;
+    Node *tail;
+    Bool isStack;
+    int size;
+    int numElementsDiff;
+    int sum;
+    int min;
+    int max;
+} DataStructure;
 
-whichType initialize(Bool pile_Or_File);
-int sum(list *head);
-Bool exist(list *head, int value);
-int num_Elements_Diff(list *head);
-int minimum(list *head);
-int maximum(list *head);
-list *insertEnd(list *head, int value);
-int length(list *head);
+DataStructure initialize(Bool isStack);
+int sum(Node *head);
+Bool exists(Node *head, int value);
+int numElementsDiff(Node *head);
+int minimum(Node *head);
+int maximum(Node *head);
+Node *insertEnd(Node *head, int value);
+void freeList(Node *head);
 
-void print_This_Type(whichType thisType);
+void printDataStructure(DataStructure ds);
 
-whichType empiler(whichType pile, int newValue);
-whichType put_On(whichType file, int newValue);
-int depiler_defiler(whichType *element);
+void push(DataStructure *ds, int value);
+int pop(DataStructure *ds);
+int dequeue(DataStructure *ds);
 
 
 #endif
