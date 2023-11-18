@@ -34,7 +34,8 @@ void freeList(Node *head);
 
 void printDataStructure(DataStructure ds);
 
-void push(DataStructure *ds, int value);
+void push_Stack(DataStructure *ds, int value);
+void push_Queue(DataStructure *ds, int value);
 int pop(DataStructure *ds);
 int dequeue(DataStructure *ds);
 

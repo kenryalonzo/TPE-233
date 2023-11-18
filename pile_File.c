@@ -145,7 +145,7 @@ int maximum(Node *head) {
 
 //  Then we move on to the length of the structure in add new value to the structure.
 
-void push(DataStructure *ds, int value) {
+void push_Stack(DataStructure *ds, int value) {
     Node *newNode = malloc(sizeof(Node));
     newNode->value = value;
     newNode->next = ds->head;
@@ -156,6 +156,26 @@ void push(DataStructure *ds, int value) {
     ds->numElementsDiff = numElementsDiff(ds->head);
     ds->sum = ds->sum + value;
 }
+
+void push_Queue(DataStructure *ds, int value) {
+    Node *newNode = malloc(sizeof(Node));
+    newNode->value = value;
+    newNode->next = NULL;
+    if (!ds->head) {
+        ds->head = newNode;
+        ds->tail = newNode;
+    } else {
+        ds->tail->next = newNode;
+        ds->tail = newNode;
+    }
+
+    ds->size++;
+
+    // Recalculate attributes after modifying the data structure
+    ds->numElementsDiff = numElementsDiff(ds->head);
+    ds->sum = ds->sum + value; 
+}
+
 
 //  Small display function, for the elements of the structure.
 
@@ -185,6 +205,8 @@ void printDataStructure(DataStructure ds) {
         printf("%d ", current->value);
         current = current->next;
     }
+
+    printf("\n---------------------------------------\n");
 }
 
 //   pop one element from the structure
