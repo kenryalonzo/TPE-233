@@ -1,6 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "pile_File.h"
+
+#ifdef _WIN32
+    #define CLEAR_SCREEN "cls"
+#else
+    #define CLEAR_SCREEN "clear"
+#endif
+
+void clear_screen() {
+    system(CLEAR_SCREEN);
+}
+
+void closed() {
+    printf("\n\n\t\t-------------------FINISH DEVELOPED BY GHOST-------------------------\n\n");
+}
 
 DataStructure initialize(Bool isStack) {
     DataStructure ds;
@@ -206,7 +221,7 @@ void printDataStructure(DataStructure ds) {
         current = current->next;
     }
 
-    printf("\n---------------------------------------\n");
+    printf("\n---------------------------------------\n\n");
 }
 
 //   pop one element from the structure
@@ -255,4 +270,132 @@ int dequeue(DataStructure *ds) {
     ds->sum = ds->sum - value;
 
     return value;
+}
+
+//  menu function
+
+void menu() {
+
+    // Initialisation des variables locales
+    int choice = 0;
+    int second_choice = 0;
+    int value = 0;
+    int choiceStructure = 0;
+    int yes_Or_no = 0;
+    Bool rejouer = True;
+
+    DataStructure myStack;
+    DataStructure myQueue;
+
+    clear_screen();
+    // Affichage du menu principal
+    do {
+        printf("** Menu pour le programme de manipulation de piles et de files **\n");
+        printf("** Bienvenue ! **\n");
+        printf("** En cas d'erreurs de manipulation des structures, le code -79 sera renvoyé à l'écran faisant office d'erreur. **\n");
+        printf("** Que souhaitez-vous faire ? **\n");
+        printf("** 1. Créer une structure de données (pile ou file) **\n");
+        printf("** 2. Quitter le programme **\n");
+        printf("** Saisissez votre choix : ");
+        scanf("%d", &choice);
+
+        // Vérification du choix initial
+        if (choice == 1) {
+            printf("** 1. Pile **\n");
+            printf("** 2. File **\n");
+            printf("** Saisissez votre choix : ");
+            scanf("%d", &choiceStructure);
+        } else if (choice == 2) {
+            closed();
+            break;
+        } else {
+            printf("** Choix invalide! Veuillez saisir 1 pour créer une pile ou 2 pour créer une file. **\n");
+        }
+        
+
+        // Initialisation de la structure de données
+        if (choice == 1 && choiceStructure == 1) {
+            myStack = initialize(True);
+            printf("--------------- Initialisation de la pile faite avec succès. ---------------\n");
+        } else if (choice == 1 && choiceStructure == 2) {
+            myQueue = initialize(False);
+            printf("--------------- Initialisation de la file faite avec succès. ---------------\n");
+        } else {
+            continue;
+        }
+        
+        if (choiceStructure == 1) {
+            // Affichage du menu secondaire
+            printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
+            printf("** 1. Empiler un element **\n");
+            printf("** 2. Dépiler un element **\n");
+            printf("** 3. Afficher votre pile **\n");
+            printf("** Saisissez votre choix : ");
+            scanf("%d", &second_choice);
+
+            // Vérification du choix secondaire
+            if (second_choice < 1 || second_choice > 3) {
+                printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
+                continue;
+            }
+
+            // Traitement du choix secondaire
+            
+            if (choiceStructure == 1 && second_choice == 1) {
+                push_Stack(&myStack, value);
+                printf("la valeur : %d, a ete ajouter a votre pile\n", value);
+            } else if (choiceStructure == 1 && second_choice == 2) {
+                value = pop(&myStack);
+                printf("The value popped from the stack is: %d\n", value);
+            } else if(choiceStructure == 1 && second_choice == 3) {
+                printDataStructure(myStack);
+            } else {
+                continue;    
+            }
+            
+        } else if (choiceStructure == 2) { 
+            // Affichage du menu secondaire
+            printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
+            printf("** 1. Emfiler un element **\n");
+            printf("** 2. Défiler un element **\n");
+            printf("** 3. Afficher votre file **\n");
+            printf("** Saisissez votre choix : ");
+            scanf("%d", &second_choice);
+
+            // Vérification du choix secondaire
+            if (second_choice < 1 || second_choice > 3) {
+                printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
+                continue;
+            }
+
+            // Traitement du choix secondaire
+            
+            if (choiceStructure == 2 && second_choice == 1) {
+                printf("la valeur : %d, a ete ajouter a votre file\n", value);
+                push_Queue(&myQueue, value);
+
+                printf("\n** voulez vous recomencer ? **\n");
+                printf("**1. oui **\n");
+                printf("**2. non **\n");
+                scanf("%d", &yes_Or_no);
+
+                if (yes_Or_no == 1) {
+                    continue;
+                } else {
+                    break;
+                }
+
+            } else if (choiceStructure == 2 && second_choice == 2) {
+                value = dequeue(&myQueue);
+                printf("The value popped from the queue is: %d\n", value);
+            } else if(choiceStructure == 2 && second_choice == 3) {
+                printDataStructure(myQueue);
+            } else {
+                continue;    
+            }
+        
+        }
+
+    } while (True);
+    
 }

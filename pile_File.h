@@ -39,5 +39,8 @@ void push_Queue(DataStructure *ds, int value);
 int pop(DataStructure *ds);
 int dequeue(DataStructure *ds);
 
+void clear_screen();
+void closed();
+void menu();
 
 #endif
