@@ -222,6 +222,7 @@ void printDataStructure(DataStructure ds) {
     }
 
     printf("\n---------------------------------------\n\n");
+    sleep(4);
 }
 
 //   pop one element from the structure
@@ -286,12 +287,14 @@ int get_value(){
 void verify_secondary_choice(int choice1) {
     if (choice1 < 1 || choice1 > 3) {
         printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
+        sleep(2);
     }
 }
 
 // Fonctions de gestion du menu
 
 int get_choice() {
+    clear_screen();
     int choice;
     printf("** Menu pour le programme de manipulation de piles et de files **\n");
     printf("** Bienvenue ! **\n");
@@ -305,6 +308,7 @@ int get_choice() {
 }
 
 int choice_structure(int choice) {
+    clear_screen();
     if (choice == 1) {
         printf("** 1. Pile **\n");
         printf("** 2. File **\n");
@@ -317,6 +321,7 @@ int choice_structure(int choice) {
 }
 
 int get_choice_for_stack(int choice) {
+    clear_screen();
     if (choice == 1) {
         printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
         printf("** 1. Empiler un element **\n");
@@ -329,6 +334,7 @@ int get_choice_for_stack(int choice) {
 }
 
 int get_choice_for_queue(int choice) {
+    clear_screen();
     if (choice == 2) {
         printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
         printf("** 1. Enfiler un element **\n");
@@ -341,6 +347,7 @@ int get_choice_for_queue(int choice) {
 }
 
 int checks_if_the_user_has_completed_their_action() {
+    clear_screen();
     int yes_Or_no = 0; 
     printf("\n** voulez vous continuer cette action ? **\n");
     printf("**1. oui **\n");
@@ -353,6 +360,7 @@ void boucle_for_add_stack(int choice1, int choice2, DataStructure *ds) {
     int value = 0;
     if (ds->isStack == False) {
         printf("** Erreur : la structure de données n'est pas une pile. **\n");
+        sleep(2);
         return;
     }
 
@@ -362,12 +370,14 @@ void boucle_for_add_stack(int choice1, int choice2, DataStructure *ds) {
     value = get_value();
     printf("La valeur : %d, a été ajoutée à votre pile\n", value);
     push_Stack(ds, value);
+    sleep(2);
 }
 
 void boucle_for_add_queue(int choice1, int choice2, DataStructure *ds) {
     int value = 0;
     if (ds->isStack) {
         printf("** Erreur : la structure de données n'est pas une file. **\n");
+        sleep(2);
         return;
     }
 
@@ -377,6 +387,7 @@ void boucle_for_add_queue(int choice1, int choice2, DataStructure *ds) {
     value = get_value();
     printf("La valeur : %d, a été ajoutée à votre file\n", value);
     push_Queue(ds, value);
+    sleep(2);
 }
 
 //  for the stack
@@ -408,6 +419,7 @@ void for_choice_Structure_equal_one(int choice) {
             if (choice == 1 && second_choice == 2) {
                 value = pop(&myStack);
                 printf("The value popped from the stack is: %d\n", value);
+                sleep(2);
 
                 yes_Or_no = checks_if_the_user_has_completed_their_action();
                 if (yes_Or_no == 1) {
@@ -454,6 +466,7 @@ void for_choice_Structure_equal_two(int choice) {
             if (choice == 2 && second_choice == 2) {
                 value = dequeue(&myQueue);
                 printf("The value popped from the queue is: %d\n", value);
+                sleep(2);
 
                 yes_Or_no = checks_if_the_user_has_completed_their_action();
                 if (yes_Or_no == 1) {
@@ -484,7 +497,6 @@ void menu() {
     DataStructure myStack;
     DataStructure myQueue;
 
-    clear_screen();
     // Affichage du menu principal
     do {
 
@@ -498,6 +510,7 @@ void menu() {
             break;
         } else {
             printf("** Choix invalide! Veuillez saisir 1 pour créer une pile ou 2 pour créer une file. **\n");
+            sleep(2);
         }
         
 
@@ -505,9 +518,11 @@ void menu() {
         if (choice == 1 && choiceStructure == 1) {
             myStack = initialize(True);
             printf("--------------- Initialisation de la pile faite avec succès. ---------------\n");
+            sleep(2);
         } else if (choice == 1 && choiceStructure == 2) {
             myQueue = initialize(False);
             printf("--------------- Initialisation de la file faite avec succès. ---------------\n");
+            sleep(2);
         } else {
             continue;
         }
