@@ -272,6 +272,204 @@ int dequeue(DataStructure *ds) {
     return value;
 }
 
+//  ask the value of the choice in the structure
+
+int get_value(){
+    int value = 0;
+    printf("Entrer votre valeur : \n");
+    scanf("%d",&value);
+    return value;
+}
+
+//  verify the choice structure
+
+void verify_secondary_choice(int choice1) {
+    if (choice1 < 1 || choice1 > 3) {
+        printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
+    }
+}
+
+// Fonctions de gestion du menu
+
+int get_choice() {
+    int choice;
+    printf("** Menu pour le programme de manipulation de piles et de files **\n");
+    printf("** Bienvenue ! **\n");
+    printf("** En cas d'erreurs de manipulation des structures, le code -79 sera renvoyé à l'écran faisant office d'erreur. **\n");
+    printf("** Que souhaitez-vous faire ? **\n");
+    printf("** 1. Créer une structure de données (pile ou file) **\n");
+    printf("** 2. Quitter le programme **\n");
+    printf("** Saisissez votre choix : ");
+    scanf("%d", &choice);
+    return choice;
+}
+
+int choice_structure(int choice) {
+    if (choice == 1) {
+        printf("** 1. Pile **\n");
+        printf("** 2. File **\n");
+        printf("** Saisissez votre choix : ");
+        scanf("%d", &choice);
+        return choice;
+    } else {
+        return choice = 2;
+    }   
+}
+
+int get_choice_for_stack(int choice) {
+    if (choice == 1) {
+        printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
+        printf("** 1. Empiler un element **\n");
+        printf("** 2. Dépiler un element **\n");
+        printf("** 3. Afficher votre pile **\n");
+        printf("** Saisissez votre choix : ");
+        scanf("%d", &choice);
+    }
+    return choice;
+}
+
+int get_choice_for_queue(int choice) {
+    if (choice == 2) {
+        printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
+        printf("** 1. Enfiler un element **\n");
+        printf("** 2. Défiler un element **\n");
+        printf("** 3. Afficher votre file **\n");
+        printf("** Saisissez votre choix : ");
+        scanf("%d", &choice);
+    }
+    return choice;
+}
+
+int checks_if_the_user_has_completed_their_action() {
+    int yes_Or_no = 0; 
+    printf("\n** voulez vous continuer cette action ? **\n");
+    printf("**1. oui **\n");
+    printf("**2. non **\n");
+    scanf("%d", &yes_Or_no);
+    return yes_Or_no;
+}
+
+void boucle_for_add_stack(int choice1, int choice2, DataStructure *ds) {
+    int value = 0;
+    if (ds->isStack == False) {
+        printf("** Erreur : la structure de données n'est pas une pile. **\n");
+        return;
+    }
+
+    if (choice2 != 1) {
+        return;
+    }
+    value = get_value();
+    printf("La valeur : %d, a été ajoutée à votre pile\n", value);
+    push_Stack(ds, value);
+}
+
+void boucle_for_add_queue(int choice1, int choice2, DataStructure *ds) {
+    int value = 0;
+    if (ds->isStack) {
+        printf("** Erreur : la structure de données n'est pas une file. **\n");
+        return;
+    }
+
+    if (choice2 != 1) {
+        return;
+    }
+    value = get_value();
+    printf("La valeur : %d, a été ajoutée à votre file\n", value);
+    push_Queue(ds, value);
+}
+
+//  for the stack
+
+void for_choice_Structure_equal_one(int choice) {
+    int second_choice = 0;
+    int yes_Or_no = 0;
+    int value = 0;
+
+    DataStructure myStack;
+    myStack = initialize(True);
+
+    if (choice == 1){
+        second_choice = get_choice_for_stack(choice);
+        verify_secondary_choice(second_choice);
+
+        repeat:
+            if (choice == 1 && second_choice == 1) {        
+                boucle_for_add_stack(choice, second_choice, &myStack);
+                yes_Or_no = checks_if_the_user_has_completed_their_action();
+                    if (yes_Or_no == 1) {
+                        goto repeat;
+                    } else {
+                        second_choice = get_choice_for_stack(choice);
+                    }
+            }
+
+        repeat1:
+            if (choice == 1 && second_choice == 2) {
+                value = pop(&myStack);
+                printf("The value popped from the stack is: %d\n", value);
+
+                yes_Or_no = checks_if_the_user_has_completed_their_action();
+                if (yes_Or_no == 1) {
+                        goto repeat1;
+                } else {
+                    second_choice = get_choice_for_stack(choice);
+                }
+            }
+
+        if (choice == 1 && second_choice == 3) {
+            printDataStructure(myStack);
+                
+        }
+    }
+}
+
+//  for the queue
+
+void for_choice_Structure_equal_two(int choice) {
+    int second_choice = 0;
+    int yes_Or_no = 0;
+    int value = 0;
+
+    DataStructure myQueue;
+    myQueue = initialize(False);
+
+
+    if (choice == 2){
+        second_choice = get_choice_for_queue(choice);
+        verify_secondary_choice(second_choice);
+
+        repeat:
+            if (choice == 2 && second_choice == 1) {        
+                boucle_for_add_queue(choice, second_choice, &myQueue);
+                yes_Or_no = checks_if_the_user_has_completed_their_action();
+                    if (yes_Or_no == 1) {
+                        goto repeat;
+                    } else {
+                        second_choice = get_choice_for_queue(choice);
+                    }
+            }
+
+        repeat1:
+            if (choice == 2 && second_choice == 2) {
+                value = dequeue(&myQueue);
+                printf("The value popped from the queue is: %d\n", value);
+
+                yes_Or_no = checks_if_the_user_has_completed_their_action();
+                if (yes_Or_no == 1) {
+                        goto repeat1;
+                    } else {
+                        second_choice = get_choice_for_queue(choice);
+                    }
+            }
+
+        if (choice == 2 && second_choice == 3) {
+            printDataStructure(myQueue);
+            
+        }
+    }
+}
+
 //  menu function
 
 void menu() {
@@ -279,10 +477,9 @@ void menu() {
     // Initialisation des variables locales
     int choice = 0;
     int second_choice = 0;
-    int value = 0;
     int choiceStructure = 0;
     int yes_Or_no = 0;
-    Bool rejouer = True;
+    int value = 0;
 
     DataStructure myStack;
     DataStructure myQueue;
@@ -290,21 +487,12 @@ void menu() {
     clear_screen();
     // Affichage du menu principal
     do {
-        printf("** Menu pour le programme de manipulation de piles et de files **\n");
-        printf("** Bienvenue ! **\n");
-        printf("** En cas d'erreurs de manipulation des structures, le code -79 sera renvoyé à l'écran faisant office d'erreur. **\n");
-        printf("** Que souhaitez-vous faire ? **\n");
-        printf("** 1. Créer une structure de données (pile ou file) **\n");
-        printf("** 2. Quitter le programme **\n");
-        printf("** Saisissez votre choix : ");
-        scanf("%d", &choice);
+
+        choice = get_choice();
 
         // Vérification du choix initial
         if (choice == 1) {
-            printf("** 1. Pile **\n");
-            printf("** 2. File **\n");
-            printf("** Saisissez votre choix : ");
-            scanf("%d", &choiceStructure);
+            choiceStructure = choice_structure(choice);
         } else if (choice == 2) {
             closed();
             break;
@@ -325,75 +513,10 @@ void menu() {
         }
         
         if (choiceStructure == 1) {
-            // Affichage du menu secondaire
-            printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
-            printf("** 1. Empiler un element **\n");
-            printf("** 2. Dépiler un element **\n");
-            printf("** 3. Afficher votre pile **\n");
-            printf("** Saisissez votre choix : ");
-            scanf("%d", &second_choice);
-
-            // Vérification du choix secondaire
-            if (second_choice < 1 || second_choice > 3) {
-                printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
-                continue;
-            }
-
-            // Traitement du choix secondaire
-            
-            if (choiceStructure == 1 && second_choice == 1) {
-                push_Stack(&myStack, value);
-                printf("la valeur : %d, a ete ajouter a votre pile\n", value);
-            } else if (choiceStructure == 1 && second_choice == 2) {
-                value = pop(&myStack);
-                printf("The value popped from the stack is: %d\n", value);
-            } else if(choiceStructure == 1 && second_choice == 3) {
-                printDataStructure(myStack);
-            } else {
-                continue;    
-            }
-            
-        } else if (choiceStructure == 2) { 
-            // Affichage du menu secondaire
-            printf("Quelles operations voulez vous effectuer sur cette structure de données ? : **\n");
-            printf("** 1. Emfiler un element **\n");
-            printf("** 2. Défiler un element **\n");
-            printf("** 3. Afficher votre file **\n");
-            printf("** Saisissez votre choix : ");
-            scanf("%d", &second_choice);
-
-            // Vérification du choix secondaire
-            if (second_choice < 1 || second_choice > 3) {
-                printf("** Choix invalide! Veuillez choisir entre les options 1,2,3 **\n");
-                continue;
-            }
-
-            // Traitement du choix secondaire
-            
-            if (choiceStructure == 2 && second_choice == 1) {
-                printf("la valeur : %d, a ete ajouter a votre file\n", value);
-                push_Queue(&myQueue, value);
-
-                printf("\n** voulez vous recomencer ? **\n");
-                printf("**1. oui **\n");
-                printf("**2. non **\n");
-                scanf("%d", &yes_Or_no);
-
-                if (yes_Or_no == 1) {
-                    continue;
-                } else {
-                    break;
-                }
-
-            } else if (choiceStructure == 2 && second_choice == 2) {
-                value = dequeue(&myQueue);
-                printf("The value popped from the queue is: %d\n", value);
-            } else if(choiceStructure == 2 && second_choice == 3) {
-                printDataStructure(myQueue);
-            } else {
-                continue;    
-            }
-        
+            for_choice_Structure_equal_one(choice);
+        } 
+        if (choiceStructure == 2) { 
+            for_choice_Structure_equal_two(choiceStructure);
         }
 
     } while (True);
